@@ -1,12 +1,12 @@
 {
     "name": "carropublic/laraveltwilio",
-    "description": ":description",
-    "license": "license",
+    "description": "A wrapper for Twilio SMS notification for Laravel",
+    "license": "MIT",
     "authors": [
         {
-            "name": "author name",
-            "email": "author email",
-            "homepage": "author homepage"
+            "name": "Universe (Set Kyar Wa Lar)",
+            "email": "universe@carro.co",
+            "homepage": "https://carro.sg"
         }
     ],
     "homepage": "https://github.com/carropublic/laraveltwilio",
