@@ -1,0 +1,41 @@
+{
+    "name": "carropublic/laraveltwilio",
+    "description": ":description",
+    "license": "license",
+    "authors": [
+        {
+            "name": "author name",
+            "email": "author email",
+            "homepage": "author homepage"
+        }
+    ],
+    "homepage": "https://github.com/carropublic/laraveltwilio",
+    "keywords": ["Laravel", "LaravelTwilio"],
+    "require": {
+        "illuminate/support": "~5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CarroPublic\\LaravelTwilio\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CarroPublic\\LaravelTwilio\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CarroPublic\\LaravelTwilio\\LaravelTwilioServiceProvider"
+            ],
+            "aliases": {
+                "LaravelTwilio": "CarroPublic\\LaravelTwilio\\Facades\\LaravelTwilio"
+            }
+        }
+    }
+}
