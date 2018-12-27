@@ -12,11 +12,40 @@ Via Composer
 ``` bash
 $ composer require carropublic/laraveltwilio
 ```
+Run the following vendor publish to publish Twillo config.
+
+```bash
+php artisan vendor:publish --tag=laraveltwilio.config
+```
+
+Update your `.env` for Twilio config in order to send out the SMS notification.
 
 ## Usage
-	
+
+For both version *1.0.0* and *2.0.0*. Easily can send out the SMS message like the following from the tinker.
+
 	$toPhone = '+65......';
 	LaravelTwilio::sendSMS($toPhone, $message='hello world');
+
+In order to use as Notification channel, the version *1.0.0* need to create your own channel. For the version *2.0.0*. You don't need to create. The package create one for you. You can see the Channel [here](https://github.com/carro-public/laravel-twilio/blob/master/src/LaravelTwilio.php).
+
+
+The following is the example usage of the package with Laravel's Notification.
+
+
+	public function via($notifiable)
+    {
+        return [SMSChannel::class];
+    }
+
+    public function toSMS($notifiable)
+    {
+        $toPhone = $notifiable->routeNotificationForTwilio();
+        $body 	 = 'Hello World';
+
+        LaravelTwilio::sendSMS($toPhone, $body);
+    }
+
 
 ## Change log
 
