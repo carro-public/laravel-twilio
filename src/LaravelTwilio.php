@@ -8,13 +8,24 @@ class LaravelTwilio
 {
     protected $client;
     
+    /**
+     * Initialize Twilio account sid and auth token
+     */
     public function __construct(){
-        $sid = config('laraveltwilio.account_sid');
-        $token = config('laraveltwilio.auth_token');
+        $sid    = config('laraveltwilio.account_sid');
+        $token  = config('laraveltwilio.auth_token');
 
         $this->client = new Client($sid, $token); 
     }
 
+    /**
+     * Send SMS
+     * 
+     * @param  string $to
+     * @param  string $message
+     * @param  string $from
+     * @return mixed
+     */
     public function sendSMS($to, $message, $from=null){
 
         $message = $this->client->messages->create(

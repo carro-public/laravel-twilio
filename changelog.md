@@ -2,7 +2,12 @@
 
 All notable changes to `LaravelTwilio` will be documented in this file.
 
-## Version 1.0
+## Version 1.0.0
 
 ### Added
-- Everything
+- Added basic message sending function wrapper
+
+## Version 2.0.0
+
+### Added
+- Added `SMSChannel Class`
