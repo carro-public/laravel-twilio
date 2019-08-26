@@ -12,6 +12,7 @@ Via Composer
 ``` bash
 $ composer require carropublic/laraveltwilio
 ```
+
 Run the following vendor publish to publish Twillo config.
 
 ```bash
@@ -22,13 +23,26 @@ Update your `.env` for Twilio config in order to send out the SMS notification.
 
 ## Usage
 
-For both version *1.0.0* and *2.0.0*. Easily can send out the SMS message like the following from the tinker.
+### SMS Message
+
+Easily can send out the SMS message like the following from the tinker.
 
 	$toPhone = '+65......';
 	LaravelTwilio::sendSMS($toPhone, $message='hello world');
 
-In order to use as Notification channel, the version *1.0.0* need to create your own channel. For the version *2.0.0*. You don't need to create. The package create one for you. You can see the Channel [here](https://github.com/carro-public/laravel-twilio/blob/master/src/LaravelTwilio.php).
+Also, you can add dynamic `$from` number like the following
 
+    $toPhone = '+65......';
+    $from = 'Carro';
+	LaravelTwilio::sendSMS($toPhone, $message='hello world', $from);
+
+### WhatsApp Message
+
+Can easily send out WhatsApp Message like the following from the tinker.
+
+
+
+### LaravelNotification
 
 The following is the example usage of the package with Laravel's Notification.
 
@@ -45,7 +59,6 @@ The following is the example usage of the package with Laravel's Notification.
 
         LaravelTwilio::sendSMS($toPhone, $body);
     }
-
 
 ## Change log
 
@@ -72,7 +85,7 @@ If you discover any security related issues, please email author email instead o
 
 ## License
 
-license. Please see the [license file](license.md) for more information.
+Please see the [license file](license.md) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/carropublic/laraveltwilio.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/carropublic/laraveltwilio.svg?style=flat-square
