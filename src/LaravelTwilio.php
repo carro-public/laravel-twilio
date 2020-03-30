@@ -7,37 +7,47 @@ use Twilio\Rest\Client;
 class LaravelTwilio
 {
     /**
-     * Twilio Client
+     * Set config
      *
-     * @var Client
+     * @var array
      */
-    protected $client;
+    protected $config;
     
     /**
      * Initialize Twilio account sid and auth token
      */
     public function __construct()
     {
-        $sid    = config('laraveltwilio.account_sid');
-        $token  = config('laraveltwilio.auth_token');
-
-        $this->client = new Client($sid, $token); 
+        $this->config = [
+            'account_sid' => config('laraveltwilio.account_sid'),
+            'auth_token' => config('laraveltwilio.auth_token'),
+            'from' => config('laraveltwilio.from'),
+            'whats_app_from' => config('laraveltwilio.whats_app_from'),
+        ];
     }
 
     /**
      * Send SMS
      * 
-     * @param  string $to
-     * @param  string $message
-     * @param  string $from
-     * @return void
+     * @param string $to
+     * @param string $message
+     * @param string $from
+     * @param null|array $confg
+     * 
+     * @return string
      */
-    public function sendSMS($to, $message, $from=null)
+    public function sendSMS($to, $message, $from=null, $config=null)
     {
-        $message = $this->client->messages->create(
+        if(is_null($config)) {
+           $config = $this->$config; 
+        }
+
+        $client = new Client($config['account_sid'], $config['auth_token']);
+
+        $message = $client->messages->create(
             $to,
             [
-                'from' => isset($from) ? $from : config('laraveltwilio.from'),
+                'from' => isset($from) ? $from : $config['from'],
                 'body' => $message
             ]
         );
@@ -53,17 +63,27 @@ class LaravelTwilio
      * @param string $from
      * @param array  $mediaUrl
      * @param string $prefix
-     * @return void
+     * @param null|array $config
+     * 
+     * @return string
      */
-    public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:')
+    public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:', $config=null)
     {
-        return $this->client->messages->create(
+        if(is_null($config)) {
+            $config = $this->$config; 
+         }
+ 
+         $client = new Client($config['account_sid'], $config['auth_token']);
+
+        $message = $client->messages->create(
             $prefix . $to,
             [
-                'from' => $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from')),
+                'from' => $prefix . (isset($from) ? $from : $config['whatsapp_from']),
                 'body' => $message,
                 'mediaUrl' => $mediaUrl
             ]
         );
+
+        return $message->sid;
     }
 }
