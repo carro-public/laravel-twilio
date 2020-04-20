@@ -40,7 +40,9 @@ Also, you can add dynamic `$from` number like the following
 
 Can easily send out WhatsApp Message like the following from the tinker.
 
-
+    $toPhone = '+65......';
+    $from = 'Carro';
+	LaravelTwilio::sendWhatsAppSMS($toPhone, $message='hello world', $mediaUrl, $from);
 
 ### LaravelNotification
 
