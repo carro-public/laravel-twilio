@@ -1,9 +1,9 @@
 <?php
 
 return [
-	/**
-	 * Twilio Account SID
-	 */
+    /**
+     * Twilio Account SID
+     */
     'account_sid' => env('TWILIO_ACCOUNT_SID'),
     
     /**

@@ -1,10 +1,10 @@
 <?php
 
-namespace CarroPublic\LaravelTwilio;
+namespace CarroPublic\LaravelTwilio\Channels;
 
 use Illuminate\Notifications\Notification;
 
-class SMSChannel
+class WhatsappChannel
 {
     /**
      * Send the given notification.
@@ -15,6 +15,6 @@ class SMSChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        return $notification->toSMS($notifiable);
+        return $notification->toWhatsApp($notifiable);
     }
 }

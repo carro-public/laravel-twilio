@@ -62,6 +62,17 @@ The following is the example usage of the package with Laravel's Notification.
         LaravelTwilio::sendSMS($toPhone, $body);
     }
 
+### Check incoming messages from Twilio
+
+When using webhook, you can validate the incoming request is from Twilio. `$token` is `config('laraveltwilio.auth_token')`. We are not using directly
+becuase it might be dynamic.
+
+```
+use CarroPublic\LaravelTwilio\Request\ValidateTwilioIncomingRequestSignature;
+
+ValidateSignatureOfRequest::isValidRequest($token, $request);
+```
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
