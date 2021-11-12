@@ -32,9 +32,18 @@ class LaravelTwilio
      * @param  string $from
      * @return void
      */
-    public function sendSMS($to, $message, $from=null)
+    public function sendSMS($to, $message, $from=null, $options=[])
     {
-        $message = $this->client->messages->create(
+        $client = $this->client;
+
+        if (count($options) > 0) {
+            $sid = data_get($options['account_sid']);
+            $token = data_get($options['auth_token']);
+
+            $client = new Client($sid, $token);
+        }
+
+        $message = $client->messages->create(
             $to,
             [
                 'from' => isset($from) ? $from : config('laraveltwilio.from'),
