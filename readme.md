@@ -36,6 +36,15 @@ Also, you can add dynamic `$from` number like the following
     $from = 'Carro';
 	LaravelTwilio::sendSMS($toPhone, $message='hello world', $from);
 
+You can pass twilio credentials(account sid and token) if you want to use dynamically.
+
+    $toPhone = '+65......';
+    $options = [
+        'account_sid' => 'AC......';
+        'auth_token'  => 'XAS.....';
+    ];
+    LaravelTwilio::sendSMS($toPhone, $message='hello world', $from, $options);
+
 ### WhatsApp Message
 
 Can easily send out WhatsApp Message like the following from the tinker.
