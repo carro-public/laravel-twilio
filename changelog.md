@@ -11,3 +11,7 @@ All notable changes to `LaravelTwilio` will be documented in this file.
 
 ### Added
 - Added `SMSChannel Class`
+
+## Version 3.1.0
+### Added
+- Testing Mode

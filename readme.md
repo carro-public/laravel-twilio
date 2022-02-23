@@ -73,6 +73,12 @@ use CarroPublic\LaravelTwilio\Request\ValidateTwilioIncomingRequestSignature;
 ValidateSignatureOfRequest::isValidRequest($token, $request);
 ```
 
+## Testing
+
+`TWILIO_TESTING_ENV` will determine if running in testing mode. Separated by `,`
+
+`TWILIO_TESTING_WHITELIST` in case of testing mode, only whitelist will be sent. Separated by `,`
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.

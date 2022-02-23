@@ -19,5 +19,15 @@ return [
     /**
      * WhatsApp from phone number
      */
-    'whats_app_from' => env('TWILIO_WHATS_APP_FROM')
+    'whats_app_from' => env('TWILIO_WHATS_APP_FROM'),
+
+    /**
+     * List of testing APP_ENV
+     */
+    'testing_envs' => explode(',', env('TWILIO_TESTING_ENV', '')),
+
+    /**
+     * In case of testing, below is valid phone number
+     */
+    'valid_testing_numbers' => explode(',', env('TWILIO_TESTING_WHITELIST', ''))
 ];

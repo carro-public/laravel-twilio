@@ -34,6 +34,13 @@ class LaravelTwilio
      */
     public function sendSMS($to, $message, $from=null)
     {
+        if ($this->isTesting() && !$this->isValidForTesting()) {
+            logger()->info(
+                "{$to} is not valid for testing. Please add your number as whitelist in TWILIO_TESTING_WHITELIST"
+            );
+            return;
+        }
+
         $message = $this->client->messages->create(
             $to,
             [
@@ -57,6 +64,13 @@ class LaravelTwilio
      */
     public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:')
     {
+        if ($this->isTesting() && !$this->isValidForTesting()) {
+            logger()->info(
+                "{$to} is not valid for testing. Please add your number as whitelist in TWILIO_TESTING_WHITELIST"
+            );
+            return;
+        }
+
         return $this->client->messages->create(
             $prefix . $to,
             [
@@ -65,5 +79,22 @@ class LaravelTwilio
                 'mediaUrl' => $mediaUrl
             ]
         );
+    }
+
+    /**
+     * Check if this current environment is testing
+     * Which should not send data to PRODUCTION users
+     * @return mixed
+     */
+    public function isTesting() {
+        return app()->environment(config('laraveltwilio.testing_envs'));
+    }
+
+    /**
+     * Check if the recipients is valid for testing
+     * @return boolean
+     */
+    public function isValidForTesting($phoneNumber) {
+        return in_array($phoneNumber, config('laraveltwilio.valid_testing_numbers'));
     }
 }
