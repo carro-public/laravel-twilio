@@ -75,9 +75,9 @@ ValidateSignatureOfRequest::isValidRequest($token, $request);
 
 ## Testing
 
-`TWILIO_TESTING_ENV` will determine if running in testing mode. Separated by `,`
+`TWILIO_PRODUCTION_ENVS` will determine if running in production mode. Separated by `,`
 
-`TWILIO_TESTING_WHITELIST` in case of testing mode, only whitelist will be sent. Separated by `,`
+`TWILIO_TESTING_WHITELIST` in case of testing mode (non-production), only whitelist will be sent. Separated by `,`
 
 ## Change log
 

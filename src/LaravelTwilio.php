@@ -30,21 +30,28 @@ class LaravelTwilio
      * @param  string $to
      * @param  string $message
      * @param  string $from
-     * @return void
+     * @return mixed
      */
     public function sendSMS($to, $message, $from=null)
     {
-        if ($this->isTesting() && !$this->isValidForTesting()) {
+        $from = isset($from) ? $from : config('laraveltwilio.from');
+        
+        if (!$this->isProduction() && !$this->isValidForTesting($to)) {
             logger()->info(
-                "{$to} is not valid for testing. Please add your number as whitelist in TWILIO_TESTING_WHITELIST"
+                "{$to} is not valid for testing. The message instead will be printed to logger\n" .
+                "Please add your number as whitelist in TWILIO_TESTING_WHITELIST to get the actual message in your device" .
+                "===================\n" .
+                "Content: {$message}\n" .
+                "To: {$to}\n" .
+                "From: {$from}" 
             );
-            return;
+            return "logger";
         }
 
         $message = $this->client->messages->create(
             $to,
             [
-                'from' => isset($from) ? $from : config('laraveltwilio.from'),
+                'from' => $from,
                 'body' => $message
             ]
         );
@@ -60,21 +67,29 @@ class LaravelTwilio
      * @param string $from
      * @param array  $mediaUrl
      * @param string $prefix
-     * @return void
+     * @return mixed
      */
     public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:')
     {
-        if ($this->isTesting() && !$this->isValidForTesting()) {
+        $from = $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from'));
+        
+        if (!$this->isProduction() && !$this->isValidForTesting($to)) {
             logger()->info(
-                "{$to} is not valid for testing. Please add your number as whitelist in TWILIO_TESTING_WHITELIST"
+                "{$to} is not valid for testing. The message instead will be printed to logger\n" .
+                "Please add your number as whitelist in TWILIO_TESTING_WHITELIST to get the actual message in your device" .
+                "===================\n" .
+                "Content: {$message}\n" .
+                "MediURL: {$mediaUrl}\n" .
+                "From: {$from}\n" .
+                "To: {$to}"
             );
-            return;
+            return "logger";
         }
 
         return $this->client->messages->create(
             $prefix . $to,
             [
-                'from' => $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from')),
+                'from' => $from,
                 'body' => $message,
                 'mediaUrl' => $mediaUrl
             ]
@@ -86,8 +101,8 @@ class LaravelTwilio
      * Which should not send data to PRODUCTION users
      * @return mixed
      */
-    public function isTesting() {
-        return app()->environment(config('laraveltwilio.testing_envs'));
+    public function isProduction() {
+        return app()->environment(config('laraveltwilio.production_envs'));
     }
 
     /**

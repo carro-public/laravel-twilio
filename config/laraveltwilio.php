@@ -22,9 +22,9 @@ return [
     'whats_app_from' => env('TWILIO_WHATS_APP_FROM'),
 
     /**
-     * List of testing APP_ENV
+     * List of production environments
      */
-    'testing_envs' => explode(',', env('TWILIO_TESTING_ENV', '')),
+    'production_envs' => explode(',', env('TWILIO_PRODUCTION_ENVS', '')),
 
     /**
      * In case of testing, below is valid phone number
