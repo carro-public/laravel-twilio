@@ -79,7 +79,7 @@ class LaravelTwilio
                 "Please add your number as whitelist in TWILIO_TESTING_WHITELIST to get the actual message in your device" .
                 "===================\n" .
                 "Content: {$message}\n" .
-                "MediURL: {$mediaUrl}\n" .
+                "MediaURL: \n" . implode("\n", $mediaUrl) . "\n" .
                 "From: {$from}\n" .
                 "To: {$to}"
             );
