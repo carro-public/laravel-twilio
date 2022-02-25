@@ -36,15 +36,7 @@ class LaravelTwilio
     {
         $from = isset($from) ? $from : config('laraveltwilio.from');
         
-        if (!$this->isProduction() && !$this->isValidForTesting($to)) {
-            logger()->info(
-                "{$to} is not valid for testing. The message instead will be printed to logger\n" .
-                "Please add your number as whitelist in TWILIO_TESTING_WHITELIST to get the actual message in your device" .
-                "===================\n" .
-                "Content: {$message}\n" .
-                "To: {$to}\n" .
-                "From: {$from}" 
-            );
+        if (!$this->isProduction() && !$this->isValidForTesting($to, $message)) {
             return "logger";
         }
 
@@ -73,17 +65,10 @@ class LaravelTwilio
     {
         $from = $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from'));
         
-        if (!$this->isProduction() && !$this->isValidForTesting($to)) {
-            logger()->info(
-                "{$to} is not valid for testing. The message instead will be printed to logger\n" .
-                "Please add your number as whitelist in TWILIO_TESTING_WHITELIST to get the actual message in your device" .
-                "===================\n" .
-                "Content: {$message}\n" .
-                "MediaURL: \n" . implode("\n", $mediaUrl) . "\n" .
-                "From: {$from}\n" .
-                "To: {$to}"
-            );
-            return "logger";
+        if (!$this->isProduction() && !$this->isValidForTesting($to, $message)) {
+            return [
+                "sid" => "logger"
+            ];
         }
 
         return $this->client->messages->create(
@@ -107,9 +92,22 @@ class LaravelTwilio
 
     /**
      * Check if the recipients is valid for testing
+     * Pass NULL to $warningMessage to disable logger message
      * @return boolean
      */
-    public function isValidForTesting($phoneNumber) {
-        return in_array($phoneNumber, config('laraveltwilio.valid_testing_numbers'));
+    public function isValidForTesting($phoneNumber, $warningMessage = "") {
+        $isValid = in_array($phoneNumber, config('laraveltwilio.valid_testing_numbers'));
+        
+        if (!$isValid && !is_null($warningMessage)) {
+            logger()->info(
+                "{$phoneNumber} is not valid for testing. The message instead will be printed to logger\n" .
+                "Please add your number as whitelist in TWILIO_TESTING_WHITELIST to get the actual message in your device\n" .
+                "===================\n" .
+                "{$warningMessage}" .
+                "===================\n"
+            );
+        }
+        
+        return $isValid;
     }
 }
