@@ -48,19 +48,25 @@ Can easily send out WhatsApp Message like the following from the tinker.
 
 The following is the example usage of the package with Laravel's Notification.
 
-
-	public function via($notifiable)
+```
+class ExampleNotification extends Notification
+{
+    public function via($notifiable)
     {
-        return [SMSChannel::class];
+        return [ SMSChannel::class, WhatsAppChannel::class ];
     }
-
+    
     public function toSMS($notifiable)
     {
-        $toPhone = $notifiable->routeNotificationForTwilio();
-        $body 	 = 'Hello World';
-
-        LaravelTwilio::sendSMS($toPhone, $body);
+        return new LaravelTwilioMessage("Message Content");
     }
+    
+    public function toWhatsApp($notifiable)
+    {
+        return new LaravelTwilioMessage("Message Content");
+    }
+}
+```
 
 ### Check incoming messages from Twilio
 
@@ -71,6 +77,34 @@ becuase it might be dynamic.
 use CarroPublic\LaravelTwilio\Request\ValidateTwilioIncomingRequestSignature;
 
 ValidateSignatureOfRequest::isValidRequest($token, $request);
+```
+
+## Sandbox Mode
+
+#### How to enable SandBox Mode
+
+1. Register Closure to return if testing is enabled `\CarroPublic\LaravelTwilio\LaravelTwilioManager::registerTestingValidator`
+
+Example:
+
+```
+LaravelTwilioManager::registerSandboxValidator(function () {
+    return !is_production();
+});
+```
+
+2. Otherwise, use`TWILIO_TESTING_ENABLE` to determine if running in testing mode. Default `false`
+
+#### How to bypass sandbox $phone validator
+
+- Register Closure to return if testing is enabled `\CarroPublic\LaravelTwilio\LaravelTwilioSender::registerValidPhoneForSandbox`
+
+Example: 
+
+```
+LaravelTwilioSender::registerValidPhoneForSandbox(function ($phoneNumber) {
+    return $phoneNumber == "+84111111111";
+}
 ```
 
 ## Change log

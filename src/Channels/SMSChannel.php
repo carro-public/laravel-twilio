@@ -2,10 +2,24 @@
 
 namespace CarroPublic\LaravelTwilio\Channels;
 
+use CarroPublic\LaravelTwilio\LaravelTwilioMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Events\Dispatcher;
+use CarroPublic\LaravelTwilio\LaravelTwilioManager;
+use CarroPublic\LaravelTwilio\Events\SMSMessageSent;
 
 class SMSChannel
 {
+    protected $manager;
+    
+    protected $events;
+
+    public function __construct(LaravelTwilioManager $manager, Dispatcher $events = null)
+    {
+        $this->manager = $manager;
+        $this->events = $events;
+    }
+
     /**
      * Send the given notification.
      *
@@ -15,6 +29,22 @@ class SMSChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        return $notification->toSMS($notifiable);
+        $message = $notification->toSMS($notifiable);
+
+        if (! $message instanceof LaravelTwilioMessage) {
+            return;
+        }
+
+        if (! $to = $notifiable->routeNotificationFor('sms', $notification) ) {
+            return;
+        }
+
+        $messageInstance = $this->manager->sender($message->sender ?? null)->send($to, $message);
+
+        if ($this->events) {
+            $this->events->dispatch(
+                new SMSMessageSent($messageInstance, $message->data)
+            );
+        }
     }
 }
