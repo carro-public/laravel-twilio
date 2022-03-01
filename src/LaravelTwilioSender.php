@@ -70,6 +70,36 @@ class LaravelTwilioSender
     }
 
     /**
+     * Legacy method to send SMS
+     * @param $to
+     * @param $body
+     * @param $from
+     * @return MessageInstance
+     */
+    public function sendSMS($to, $body, $from) {
+        $message = new LaravelTwilioMessage($body);
+        $message->from($from);
+        
+        return $this->send($to, $message);
+    }
+
+    /**
+     * * Legacy method to send WhatsApp Message
+     * @param $to
+     * @param $body
+     * @param $mediaUrl
+     * @param $from
+     * @return MessageInstance
+     */
+    public function sendWhatsAppSMS($to, $body, $mediaUrl, $from) {
+        $message = new LaravelTwilioMessage($body);
+        $message->from($from);
+        $message->mediaUrls(!is_array($mediaUrl) ? [$mediaUrl] : $mediaUrl);
+
+        return $this->send($to, $message);
+    }
+
+    /**
      * Get default from phone number
      * @return mixed
      */
