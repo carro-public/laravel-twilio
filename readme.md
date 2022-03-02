@@ -23,7 +23,69 @@ Update your `.env` for Twilio config in order to send out the SMS notification.
 
 ## Usage
 
-### SMS Message
+### LaravelNotification
+
+The following is the example usage of the package with Laravel's Notification.
+
+#### Create Notification Class
+
+```
+class ExampleNotification extends Notification
+{
+    // Which channel this notification should be sent to
+    public function via($notifiable)
+    {
+        return [ SMSChannel::class, WhatsAppChannel::class ];
+    }
+    
+    // Notification payload (content) will be sent
+    public function toSMS($notifiable)
+    {
+        return new LaravelTwilioMessage("Message Content");
+    }
+    
+    // Notification payload (content) will be sent
+    public function toWhatsApp($notifiable)
+    {
+        return new LaravelTwilioMessage("Message Content");
+    }
+}
+```
+
+#### Create Notifiable Class
+
+```
+class Contact extends Model {
+
+    use Notifiable;
+    
+    // Phone number to receive
+    public function routeNotificationForSms()
+    {
+        return $this->phone;
+    }
+    
+    // Phone number to receive
+    public function routeNotificationForWhatsapp()
+    {
+        return $this->phone;
+    }
+}
+```
+
+##### Sending Notification from Notifiable Instance
+
+```
+$contact->notify(new ExampleNotification());
+```
+
+##### Sending Notification from Anonymous Notifiable Instance
+
+```
+Notification::route('sms')->notify(new ExampleNotification());
+```
+
+### SMS Message (Legacy Method)
 
 Easily can send out the SMS message like the following from the tinker.
 
@@ -36,37 +98,13 @@ Also, you can add dynamic `$from` number like the following
     $from = 'Carro';
 	LaravelTwilio::sendSMS($toPhone, $message='hello world', $from);
 
-### WhatsApp Message
+### WhatsApp Message (Legacy Method)
 
 Can easily send out WhatsApp Message like the following from the tinker.
 
     $toPhone = '+65......';
     $from = 'Carro';
 	LaravelTwilio::sendWhatsAppSMS($toPhone, $message='hello world', $mediaUrl, $from);
-
-### LaravelNotification
-
-The following is the example usage of the package with Laravel's Notification.
-
-```
-class ExampleNotification extends Notification
-{
-    public function via($notifiable)
-    {
-        return [ SMSChannel::class, WhatsAppChannel::class ];
-    }
-    
-    public function toSMS($notifiable)
-    {
-        return new LaravelTwilioMessage("Message Content");
-    }
-    
-    public function toWhatsApp($notifiable)
-    {
-        return new LaravelTwilioMessage("Message Content");
-    }
-}
-```
 
 ### Check incoming messages from Twilio
 
@@ -93,11 +131,11 @@ LaravelTwilioManager::registerSandboxValidator(function () {
 });
 ```
 
-2. Otherwise, use`TWILIO_TESTING_ENABLE` to determine if running in testing mode. Default `false`
+2. Otherwise, use`TWILIO_TESTING_ENABLE` to determine if running in sandbox mode. Default `false`
 
 #### How to bypass sandbox $phone validator
 
-- Register Closure to return if testing is enabled `\CarroPublic\LaravelTwilio\LaravelTwilioSender::registerValidPhoneForSandbox`
+- Register Closure to return if sandbox is enabled `\CarroPublic\LaravelTwilio\LaravelTwilioSender::registerValidPhoneForSandbox`
 
 Example: 
 
