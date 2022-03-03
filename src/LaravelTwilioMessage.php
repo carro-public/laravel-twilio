@@ -41,9 +41,9 @@ class LaravelTwilioMessage
     }
 
     /**
-     * @param string $from
+     * @param $from
      */
-    public function from(string $from)
+    public function from($from)
     {
         $this->from = $from;
         

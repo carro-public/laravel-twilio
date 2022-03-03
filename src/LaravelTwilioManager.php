@@ -24,24 +24,12 @@ class LaravelTwilioManager implements Factory
     /**
      * Get a sender instance by name.
      *
-     * @param  string|null  $name
+     * @param  string  $name
      * @return LaravelTwilioSender
      */
     public function sender($name = null)
     {
-        $name = $name ?: $this->getDefaultSender();
-
         return $this->senders[$name] = $this->get($name);
-    }
-
-    /**
-     * Get the default sender config
-     *
-     * @return string
-     */
-    public function getDefaultSender()
-    {
-        return $this->config->get('laraveltwilio.default');
     }
 
     /**
@@ -80,8 +68,12 @@ class LaravelTwilioManager implements Factory
      * @param string $name
      * @return array
      */
-    protected function getConfig($name)
+    protected function getConfig($name = null)
     {
+        if (is_null($name)) {
+            return $this->config->get("laraveltwilio.default");
+        }
+
         return $this->config->get("laraveltwilio.senders.{$name}");
     }
 

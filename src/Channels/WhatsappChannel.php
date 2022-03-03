@@ -36,7 +36,9 @@ class WhatsappChannel
         }
 
         if (! $to = $notifiable->routeNotificationFor('whatsapp', $notification) ) {
-            return;
+            if (! $to = $notifiable->routeNotificationFor(WhatsappChannel::class, $notification) ) {
+                return;
+            }
         }
 
         // Change to WhatsApp message

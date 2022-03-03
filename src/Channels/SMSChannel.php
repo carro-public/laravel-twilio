@@ -35,8 +35,10 @@ class SMSChannel
             return;
         }
 
-        if (! $to = $notifiable->routeNotificationFor('sms', $notification) ) {
-            return;
+        if (! $to = $notifiable->routeNotificationFor('sms', $notification)) {
+            if (! $to = $notifiable->routeNotificationFor(SMSChannel::class, $notification)) {
+                return;
+            }
         }
 
         $messageInstance = $this->manager->sender($message->sender ?? null)->send($to, $message);
