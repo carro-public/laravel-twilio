@@ -2,6 +2,7 @@
 
 namespace CarroPublic\LaravelTwilio;
 
+use Twilio\Rest\Api;
 use Twilio\Rest\Client;
 use Twilio\Rest\Api\V2010;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
@@ -58,9 +59,9 @@ class LaravelTwilioSender
         }
 
         if ($this->sandbox && !$this->isValidForSandbox($to, $message->toString())) {
-            return new MessageInstance(new V2010(), array_merge([
+            return new MessageInstance(new V2010(new Api($this->client)), array_merge([
                 'sid' => 'logger'
-            ], $payload));
+            ], $payload), $this->config['account_sid']);
         }
 
         return $this->client->messages->create(
@@ -129,7 +130,7 @@ class LaravelTwilioSender
                 "{$phoneNumber} is not valid for sandbox. The message instead will be printed to logger\n" .
                 "Either turn off sandbox mode [TWILIO_SANDBOX_ENABLE] or registerValidPhoneValidator to check valid.\n" .
                 "===================\n" .
-                "{$warningMessage}" .
+                "{$warningMessage}\n" .
                 "===================\n"
             );
         }
