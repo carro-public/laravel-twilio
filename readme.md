@@ -85,26 +85,21 @@ $contact->notify(new ExampleNotification());
 Notification::route('sms')->notify(new ExampleNotification());
 ```
 
-### SMS Message (Legacy Method)
+### SMS Message by helper function
 
-Easily can send out the SMS message like the following from the tinker.
+Easily can send out the SMS message
 
-	$toPhone = '+65......';
-	LaravelTwilio::sendSMS($toPhone, $message='hello world');
+```
+send_sms($to, $message)
+```
 
-Also, you can add dynamic `$from` number like the following
+### WhatsApp Message by helper function
 
-    $toPhone = '+65......';
-    $from = 'Carro';
-	LaravelTwilio::sendSMS($toPhone, $message='hello world', $from);
+Can easily send out WhatsApp Message
 
-### WhatsApp Message (Legacy Method)
-
-Can easily send out WhatsApp Message like the following from the tinker.
-
-    $toPhone = '+65......';
-    $from = 'Carro';
-	LaravelTwilio::sendWhatsAppSMS($toPhone, $message='hello world', $mediaUrl, $from);
+```
+send_whatsapp($to, $message)
+```
 
 ### Check incoming messages from Twilio
 
