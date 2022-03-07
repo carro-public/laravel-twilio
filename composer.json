@@ -27,7 +27,7 @@
             "CarroPublic\\LaravelTwilio\\": "src/"
         },
         "files": [
-            "./src/twilio_helpers.php"
+            "src/twilio_helpers.php"
         ]
     },
     "autoload-dev": {

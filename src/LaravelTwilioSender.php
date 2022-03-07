@@ -61,7 +61,7 @@ class LaravelTwilioSender
 
         if ($this->sandbox && !$this->isValidForSandbox($to, $message)) {
             return new MessageInstance(new V2010(new Api($this->client)), array_merge([
-                'sid' => 'logger'
+                'sid' => 'rejected_event_dispatched'
             ], $payload), $this->config['account_sid']);
         }
 
@@ -86,7 +86,6 @@ class LaravelTwilioSender
 
     /**
      * Check if the recipients is valid for sandbox
-     * Pass NULL to $warningMessage to disable logger message
      * @return boolean
      */
     public function isValidForSandbox($phoneNumber, $message) {
@@ -97,7 +96,7 @@ class LaravelTwilioSender
         }
 
         if (!$isValid) {
-            event(new TwilioMessageRejectedForSandbox($message));
+            event(new TwilioMessageRejectedForSandbox($phoneNumber, $message));
         }
         
         return $isValid;

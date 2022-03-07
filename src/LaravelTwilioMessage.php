@@ -2,6 +2,8 @@
 
 namespace CarroPublic\LaravelTwilio;
 
+use Illuminate\Database\Eloquent\Model;
+
 class LaravelTwilioMessage
 {
     /**
@@ -106,12 +108,31 @@ class LaravelTwilioMessage
      */
     public function toString() {
         return json_encode([
-            "From" => $this->from,
+            "From" => $this->from ?? app()->make(LaravelTwilioManager::class)->sender()->getDefaultFrom(),
             "Message" => $this->message,
-            "Sender" => $this->sender,
-            "IsWhatsApp" => $this->isWhatsApp,
-            "Data" => $this->data,
+            "Sender" => $this->sender ?? 'default',
+            "Type" => $this->isWhatsApp ? 'WhatsApp' : 'SMS',
+            "Data" => $this->toArray($this->data),
             "MediaUrls" => $this->mediaUrls,
         ], JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Deep transform to array
+     * @param $data
+     * @return array|mixed
+     */
+    protected function toArray($data) {
+        if ($data instanceof Model) {
+            return get_class($data) . " ~ Table=" . $data->getTable() . " ~ ID=" . $data->getQueueableId();
+        }
+        
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        return array_map(function ($item) {
+            return $this->toArray($item);
+        }, $data);
     }
 }

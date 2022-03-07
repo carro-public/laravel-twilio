@@ -13,21 +13,20 @@ class TwilioMessageRejectedForSandbox
     public $message;
 
     /**
-     * The message data.
-     *
-     * @var array
+     * Receive phone number
+     * @var
      */
-    public $data;
+    public $to;
 
     /**
      * Create a new event instance.
      *
+     * @param $to
      * @param LaravelTwilioMessage $message
-     * @param array $data
-     * @return void
      */
-    public function __construct($message)
+    public function __construct($to, $message)
     {
+        $this->to = $to;
         $this->message = $message;
     }
 }
