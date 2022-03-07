@@ -111,6 +111,7 @@ class LaravelTwilioMessage
             "Sender" => $this->sender,
             "IsWhatsApp" => $this->isWhatsApp,
             "Data" => $this->data,
+            "MediaUrls" => $this->mediaUrls,
         ], JSON_PRETTY_PRINT);
     }
 }
