@@ -2,7 +2,7 @@
 
 namespace CarroPublic\LaravelTwilio\Events;
 
-class SMSMessageSent
+class TwilioMessageSent
 {
     /**
      * The SMS message instance.

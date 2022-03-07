@@ -6,7 +6,7 @@ use CarroPublic\LaravelTwilio\LaravelTwilioMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Events\Dispatcher;
 use CarroPublic\LaravelTwilio\LaravelTwilioManager;
-use CarroPublic\LaravelTwilio\Events\SMSMessageSent;
+use CarroPublic\LaravelTwilio\Events\TwilioMessageSent;
 
 class WhatsappChannel
 {
@@ -48,7 +48,7 @@ class WhatsappChannel
 
         if ($this->events) {
             $this->events->dispatch(
-                new SMSMessageSent($messageInstance, $message->data)
+                new TwilioMessageSent($messageInstance, $message->data)
             );
         }
     }

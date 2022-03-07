@@ -6,6 +6,7 @@ use Twilio\Rest\Api;
 use Twilio\Rest\Client;
 use Twilio\Rest\Api\V2010;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
+use CarroPublic\LaravelTwilio\Events\TwilioMessageRejectedForSandbox;
 
 class LaravelTwilioSender
 {
@@ -58,7 +59,7 @@ class LaravelTwilioSender
             $payload['mediaUrl'] = $message->mediaUrls;
         }
 
-        if ($this->sandbox && !$this->isValidForSandbox($to, $message->toString())) {
+        if ($this->sandbox && !$this->isValidForSandbox($to, $message)) {
             return new MessageInstance(new V2010(new Api($this->client)), array_merge([
                 'sid' => 'logger'
             ], $payload), $this->config['account_sid']);
@@ -68,36 +69,6 @@ class LaravelTwilioSender
             $message->isWhatsApp ? "whatsapp:" . $to : $to,
             $payload
         );
-    }
-
-    /**
-     * Legacy method to send SMS
-     * @param $to
-     * @param $body
-     * @param $from
-     * @return MessageInstance
-     */
-    public function sendSMS($to, $body, $from) {
-        $message = new LaravelTwilioMessage($body);
-        $message->from($from);
-        
-        return $this->send($to, $message);
-    }
-
-    /**
-     * * Legacy method to send WhatsApp Message
-     * @param $to
-     * @param $body
-     * @param $mediaUrl
-     * @param $from
-     * @return MessageInstance
-     */
-    public function sendWhatsAppSMS($to, $body, $mediaUrl, $from) {
-        $message = new LaravelTwilioMessage($body);
-        $message->from($from);
-        $message->mediaUrls(!is_array($mediaUrl) ? [$mediaUrl] : $mediaUrl);
-
-        return $this->send($to, $message);
     }
 
     /**
@@ -118,21 +89,15 @@ class LaravelTwilioSender
      * Pass NULL to $warningMessage to disable logger message
      * @return boolean
      */
-    public function isValidForSandbox($phoneNumber, $warningMessage = "") {
+    public function isValidForSandbox($phoneNumber, $message) {
         $isValid = false;
 
         if (self::$validPhoneForSandboxValidator) {
             $isValid = call_user_func(self::$validPhoneForSandboxValidator, $phoneNumber);
         }
 
-        if (!$isValid && !is_null($warningMessage) && function_exists('logger')) {
-            logger()->info(
-                "{$phoneNumber} is not valid for sandbox. The message instead will be printed to logger\n" .
-                "Either turn off sandbox mode [TWILIO_SANDBOX_ENABLE] or registerValidPhoneValidator to check valid.\n" .
-                "===================\n" .
-                "{$warningMessage}\n" .
-                "===================\n"
-            );
+        if (!$isValid) {
+            event(new TwilioMessageRejectedForSandbox($message));
         }
         
         return $isValid;
