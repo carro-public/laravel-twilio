@@ -29,18 +29,7 @@ class LaravelTwilioManager implements Factory
      */
     public function sender($name = null)
     {
-        return $this->senders[$name] = $this->get($name);
-    }
-
-    /**
-     * Attempt to get the mailer from the local cache.
-     *
-     * @param  string  $name
-     * @return LaravelTwilioSender
-     */
-    protected function get($name)
-    {
-        return $this->mailers[$name] ?? $this->resolve($name);
+        return $this->senders[$name] ?? $this->resolve($name);
     }
 
     /**

@@ -19,6 +19,8 @@ class GenericTwilioNotification extends Notification implements ShouldQueue
 
     protected $from;
     
+    protected $sender;
+    
     protected $data;
 
     /**
@@ -54,12 +56,12 @@ class GenericTwilioNotification extends Notification implements ShouldQueue
 
     public function toSMS($notifiable)
     {
-        return (new LaravelTwilioMessage($this->body))->data($this->data)->from($this->from);
+        return (new LaravelTwilioMessage($this->body))->data($this->data)->from($this->from)->sender($this->sender);
     }
 
     public function toWhatsApp($notifiable)
     {
-        return (new LaravelTwilioMessage($this->body))->data($this->data)->from($this->from);
+        return (new LaravelTwilioMessage($this->body))->data($this->data)->from($this->from)->sender($this->sender);
     }
 
     /**
@@ -69,6 +71,17 @@ class GenericTwilioNotification extends Notification implements ShouldQueue
     public function from($from)
     {
         $this->from = $from;
+
+        return $this;
+    }
+
+    /**
+     * @param $sender
+     * @return self
+     */
+    public function sender($sender)
+    {
+        $this->sender = $sender;
 
         return $this;
     }

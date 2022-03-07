@@ -25,10 +25,7 @@
     "autoload": {
         "psr-4": {
             "CarroPublic\\LaravelTwilio\\": "src/"
-        },
-        "files": [
-            "src/twilio_helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
