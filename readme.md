@@ -85,22 +85,6 @@ $contact->notify(new ExampleNotification());
 Notification::route('sms')->notify(new ExampleNotification());
 ```
 
-### SMS Message by helper function
-
-Easily can send out the SMS message
-
-```
-send_sms($to, $message)
-```
-
-### WhatsApp Message by helper function
-
-Can easily send out WhatsApp Message
-
-```
-send_whatsapp($to, $message)
-```
-
 ### Check incoming messages from Twilio
 
 When using webhook, you can validate the incoming request is from Twilio. `$token` is `config('laraveltwilio.auth_token')`. We are not using directly
