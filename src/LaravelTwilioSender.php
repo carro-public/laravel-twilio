@@ -51,7 +51,7 @@ class LaravelTwilioSender
      */
     public function send($to, LaravelTwilioMessage $message) {
         $payload = [
-            'from' => $message->from ?? $this->getDefaultFrom(),
+            'from' => $this->getFrom($message),
             'body' => $message->message,
         ];
 
@@ -75,7 +75,16 @@ class LaravelTwilioSender
      * Get default from phone number
      * @return mixed
      */
-    public function getDefaultFrom() {
+    public function getDefaultFrom($whatsApp) {
+        if ($whatsApp) {
+            return data_get(
+                $this->config, 'whatsapp_from',
+                data_get(
+                    $this->config, "default.whatsapp_from"
+                )
+            );
+        }
+
         return data_get(
             $this->config, 'from',
             data_get(
@@ -109,5 +118,16 @@ class LaravelTwilioSender
      */
     public static function registerValidPhoneForSandbox($validator) {
         self::$validPhoneForSandboxValidator = $validator;
+    }
+
+    /**
+     * In case of whatsapp, append whatsapp: as prefix
+     * @param LaravelTwilioMessage $message
+     * @return string
+     */
+    protected function getFrom(LaravelTwilioMessage $message) {
+        $from = $message->from ?? $this->getDefaultFrom($message->isWhatsApp);
+        
+        return $message->isWhatsApp ? ("whatsapp:" . $from) : $from;
     }
 }
