@@ -12,7 +12,9 @@
     "homepage": "https://github.com/carropublic/laraveltwilio",
     "keywords": ["Laravel", "LaravelTwilio"],
     "require": {
+        "illuminate/events": "~5|~6|~7|~8",
         "illuminate/support": "~5|~6|~7|~8",
+        "illuminate/collections": "~5.5|~6|~7|~8",
         "twilio/sdk": "^6"
     },
     "require-dev": {
@@ -34,10 +36,12 @@
         "laravel": {
             "providers": [
                 "CarroPublic\\LaravelTwilio\\LaravelTwilioServiceProvider"
-            ],
-            "aliases": {
-                "LaravelTwilio": "CarroPublic\\LaravelTwilio\\Facades\\LaravelTwilio"
-            }
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
         }
     }
 }

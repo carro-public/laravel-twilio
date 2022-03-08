@@ -23,44 +23,67 @@ Update your `.env` for Twilio config in order to send out the SMS notification.
 
 ## Usage
 
-### SMS Message
-
-Easily can send out the SMS message like the following from the tinker.
-
-	$toPhone = '+65......';
-	LaravelTwilio::sendSMS($toPhone, $message='hello world');
-
-Also, you can add dynamic `$from` number like the following
-
-    $toPhone = '+65......';
-    $from = 'Carro';
-	LaravelTwilio::sendSMS($toPhone, $message='hello world', $from);
-
-### WhatsApp Message
-
-Can easily send out WhatsApp Message like the following from the tinker.
-
-    $toPhone = '+65......';
-    $from = 'Carro';
-	LaravelTwilio::sendWhatsAppSMS($toPhone, $message='hello world', $mediaUrl, $from);
-
 ### LaravelNotification
 
 The following is the example usage of the package with Laravel's Notification.
 
+#### Create Notification Class
 
-	public function via($notifiable)
+```
+class ExampleNotification extends Notification
+{
+    // Which channel this notification should be sent to
+    public function via($notifiable)
     {
-        return [SMSChannel::class];
+        return [ SMSChannel::class, WhatsAppChannel::class ];
     }
-
+    
+    // Notification payload (content) will be sent
     public function toSMS($notifiable)
     {
-        $toPhone = $notifiable->routeNotificationForTwilio();
-        $body 	 = 'Hello World';
-
-        LaravelTwilio::sendSMS($toPhone, $body);
+        return new LaravelTwilioMessage("Message Content");
     }
+    
+    // Notification payload (content) will be sent
+    public function toWhatsApp($notifiable)
+    {
+        return new LaravelTwilioMessage("Message Content");
+    }
+}
+```
+
+#### Create Notifiable Class
+
+```
+class Contact extends Model {
+
+    use Notifiable;
+    
+    // Phone number to receive
+    public function routeNotificationForSms()
+    {
+        return $this->phone;
+    }
+    
+    // Phone number to receive
+    public function routeNotificationForWhatsapp()
+    {
+        return $this->phone;
+    }
+}
+```
+
+##### Sending Notification from Notifiable Instance
+
+```
+$contact->notify(new ExampleNotification());
+```
+
+##### Sending Notification from Anonymous Notifiable Instance
+
+```
+Notification::route('sms')->notify(new ExampleNotification());
+```
 
 ### Check incoming messages from Twilio
 
@@ -71,6 +94,34 @@ becuase it might be dynamic.
 use CarroPublic\LaravelTwilio\Request\ValidateTwilioIncomingRequestSignature;
 
 ValidateSignatureOfRequest::isValidRequest($token, $request);
+```
+
+## Sandbox Mode
+
+#### How to enable SandBox Mode
+
+1. Register Closure to return if testing is enabled `\CarroPublic\LaravelTwilio\LaravelTwilioManager::registerTestingValidator`
+
+Example:
+
+```
+LaravelTwilioManager::registerSandboxValidator(function () {
+    return !is_production();
+});
+```
+
+2. Otherwise, use`TWILIO_TESTING_ENABLE` to determine if running in sandbox mode. Default `false`
+
+#### How to bypass sandbox $phone validator
+
+- Register Closure to return if sandbox is enabled `\CarroPublic\LaravelTwilio\LaravelTwilioSender::registerValidPhoneForSandbox`
+
+Example: 
+
+```
+LaravelTwilioSender::registerValidPhoneForSandbox(function ($phoneNumber) {
+    return $phoneNumber == "+84111111111";
+}
 ```
 
 ## Change log

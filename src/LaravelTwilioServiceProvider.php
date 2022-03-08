@@ -15,7 +15,6 @@ class LaravelTwilioServiceProvider extends ServiceProvider
     {
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
-
             // Publishing the configuration file.
             $this->publishes([
                 __DIR__.'/../config/laraveltwilio.php' => config_path('laraveltwilio.php'),
@@ -33,8 +32,8 @@ class LaravelTwilioServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/laraveltwilio.php', 'laraveltwilio');
 
         // Register the service the package provides.
-        $this->app->singleton('laraveltwilio', function ($app) {
-            return new LaravelTwilio;
+        $this->app->singleton(LaravelTwilioManager::class, function ($app) {
+            return new LaravelTwilioManager($app);
         });
     }
 
@@ -45,6 +44,6 @@ class LaravelTwilioServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['laraveltwilio'];
+        return [LaravelTwilioManager::class];
     }
 }

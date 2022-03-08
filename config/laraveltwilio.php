@@ -1,23 +1,42 @@
 <?php
 
 return [
-    /**
-     * Twilio Account SID
-     */
-    'account_sid' => env('TWILIO_ACCOUNT_SID'),
+    'default' => [
+        /**
+         * Twilio Account SID
+         */
+        'account_sid' => env('TWILIO_ACCOUNT_SID'),
+
+        /**
+         * Twilio auth token
+         */
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+
+        /**
+         * From phone number
+         */
+        'from' => env('TWILIO_FROM'),
+    ],
     
-    /**
-     * Twilio auth token
-     */
-    'auth_token' => env('TWILIO_AUTH_TOKEN'),
+    'senders' => [
+        /**
+         * A sender have to contain: 
+         * - account_sid
+         * - auth_token
+         * - from: For SMS
+         * - whats_app_from: For WhapsApp
+         * And wrapped by a sender name
+         * Example:
+         *     "singapore" => [
+         *         "account_sid" => "",
+         *         "auth_token" => "",
+         *         "from" => "",
+         *     ],
+         */
+    ],
 
     /**
-     * From phone number
+     * Testing Enable Flag
      */
-    'from' => env('TWILIO_FROM'),
-
-    /**
-     * WhatsApp from phone number
-     */
-    'whats_app_from' => env('TWILIO_WHATS_APP_FROM')
+    'sandbox' => env('TWILIO_SANDBOX_ENABLE', false)
 ];
