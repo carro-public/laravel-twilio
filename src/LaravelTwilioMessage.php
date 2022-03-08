@@ -61,10 +61,10 @@ class LaravelTwilioMessage
     }
     
     /**
-     * @param array $data
+     * @param $data
      * @return LaravelTwilioMessage
      */
-    public function data(array $data)
+    public function data($data)
     {
         $this->data = $data;
         
@@ -72,10 +72,10 @@ class LaravelTwilioMessage
     }
 
     /**
-     * @param string $sender
+     * @param $sender
      * @return LaravelTwilioMessage
      */
-    public function sender(string $sender)
+    public function sender($sender)
     {
         $this->sender = $sender;
 
