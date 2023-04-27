@@ -3,25 +3,32 @@
 namespace CarroPublic\LaravelTwilio;
 
 use Twilio\Rest\Client;
+use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 class LaravelTwilio
 {
     /**
      * Twilio Client
      *
-     * @var Client
+     * @var Client[]
      */
-    protected $client;
+    protected $clients;
     
     /**
      * Initialize Twilio account sid and auth token
+     * @return Client
      */
-    public function __construct()
+    public function getClient()
     {
         $sid    = config('laraveltwilio.account_sid');
         $token  = config('laraveltwilio.auth_token');
 
-        $this->client = new Client($sid, $token); 
+        # Preserve Client instance of each $sid
+        if (!isset($this->clients[$sid])) {
+            $this->clients[$sid] = new Client($sid, $token);
+        }
+        
+        return $this->clients[$sid];
     }
 
     /**
@@ -30,11 +37,11 @@ class LaravelTwilio
      * @param  string $to
      * @param  string $message
      * @param  string $from
-     * @return void
+     * @return string
      */
     public function sendSMS($to, $message, $from=null)
     {
-        $message = $this->client->messages->create(
+        $message = $this->getClient()->messages->create(
             $to,
             [
                 'from' => isset($from) ? $from : config('laraveltwilio.from'),
@@ -53,11 +60,11 @@ class LaravelTwilio
      * @param string $from
      * @param array  $mediaUrl
      * @param string $prefix
-     * @return void
+     * @return MessageInstance
      */
     public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:')
     {
-        return $this->client->messages->create(
+        return $this->getClient()->messages->create(
             $prefix . $to,
             [
                 'from' => $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from')),
