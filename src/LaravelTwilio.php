@@ -60,17 +60,21 @@ class LaravelTwilio
      * @param string $from
      * @param array  $mediaUrl
      * @param string $prefix
+     * @param array $contentParams
      * @return MessageInstance
      */
-    public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:')
+    public function sendWhatsAppSMS($to, $message, $mediaUrl=[], $from=null, $prefix='whatsapp:', $contentParams = [])
     {
         return $this->getClient()->messages->create(
             $prefix . $to,
-            [
-                'from' => $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from')),
-                'body' => $message,
-                'mediaUrl' => $mediaUrl
-            ]
+            array_merge(
+                [
+                    'from' => $prefix . (isset($from) ? $from : config('laraveltwilio.whatsapp_from')),
+                    'body' => $message,
+                    'mediaUrl' => $mediaUrl
+                ],
+                $contentParams,
+            )
         );
     }
 }
