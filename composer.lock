@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ee0a9fb8c5748cb057dce61fc1ebe85",
+    "content-hash": "b9a47638abe57a87be1e8d467859ceb4",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -2532,16 +2532,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "6.3.0",
+            "version": "7.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "1c723c7155e5e41bece4f5c4aca0b28d63778b04"
+                "url": "git@github.com:twilio/twilio-php.git",
+                "reference": "4390f89081a1e0bf680d55f2f916f2a89dc6ae4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/1c723c7155e5e41bece4f5c4aca0b28d63778b04",
-                "reference": "1c723c7155e5e41bece4f5c4aca0b28d63778b04",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/4390f89081a1e0bf680d55f2f916f2a89dc6ae4e",
+                "reference": "4390f89081a1e0bf680d55f2f916f2a89dc6ae4e",
                 "shasum": ""
             },
             "require": {
@@ -2578,7 +2578,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2020-04-15T20:03:03+00:00"
+            "time": "2023-07-27T10:01:20+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -4330,5 +4330,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.2.0"
 }
