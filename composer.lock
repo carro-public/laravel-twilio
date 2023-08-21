@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ee0a9fb8c5748cb057dce61fc1ebe85",
+    "content-hash": "b9a47638abe57a87be1e8d467859ceb4",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -2532,24 +2532,25 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "6.44.4",
+            "version": "7.7.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:twilio/twilio-php.git",
-                "reference": "08aad5f377e2245b9cd7508e7762d95e7392fa4d"
+                "reference": "4390f89081a1e0bf680d55f2f916f2a89dc6ae4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/08aad5f377e2245b9cd7508e7762d95e7392fa4d",
-                "reference": "08aad5f377e2245b9cd7508e7762d95e7392fa4d",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/4390f89081a1e0bf680d55f2f916f2a89dc6ae4e",
+                "reference": "4390f89081a1e0bf680d55f2f916f2a89dc6ae4e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0"
             },
             "require-dev": {
-                "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "phpunit/phpunit": ">=7.0 < 10"
+                "guzzlehttp/guzzle": "^6.3",
+                "phpunit/phpunit": ">=4.5",
+                "theseer/phpdox": "^0.12.0"
             },
             "suggest": {
                 "guzzlehttp/guzzle": "An HTTP client to execute the API requests"
@@ -2577,7 +2578,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2023-02-22T19:59:53+00:00"
+            "time": "2023-07-27T10:01:20+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -4329,5 +4330,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.2.0"
 }
