@@ -39,5 +39,10 @@
                 "LaravelTwilio": "CarroPublic\\LaravelTwilio\\Facades\\LaravelTwilio"
             }
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }
