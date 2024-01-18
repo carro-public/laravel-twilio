@@ -12,9 +12,9 @@
     "homepage": "https://github.com/carropublic/laraveltwilio",
     "keywords": ["Laravel", "LaravelTwilio"],
     "require": {
-        "illuminate/events": "~10",
-        "illuminate/support": "~10",
-        "illuminate/collections": "~10",
+        "illuminate/events": "~9|~10",
+        "illuminate/support": "~9|~10",
+        "illuminate/collections": "~9|~10",
         "twilio/sdk": "^7.3"
     },
     "require-dev": {
