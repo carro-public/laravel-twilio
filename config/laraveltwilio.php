@@ -16,6 +16,11 @@ return [
          * From phone number
          */
         'from' => env('TWILIO_FROM'),
+
+        /**
+         * From whatsapp phone number
+         */
+        'whatsapp_from' => env('TWILIO_WHATSAPP_FROM'),
     ],
     
     'senders' => [
